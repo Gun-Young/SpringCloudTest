@@ -18,4 +18,11 @@ public interface ProductOrderService {
      ProductOrder save(int userId, int productId);
 
 
+    /**
+     * 根据id查询商品
+     * @param id
+     * @return
+     */
+     Object findProductById(int id);
+
 }
