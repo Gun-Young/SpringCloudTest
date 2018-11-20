@@ -3,6 +3,8 @@ package com.example.demo.controller;
 
 import com.example.demo.service.ProductOrderService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +22,8 @@ public class OrderController {
     @Autowired
     private ProductOrderService productOrderService;
 
+    private Logger logger = LoggerFactory.getLogger(OrderController.class);
+
 
     /**
      * 保存订单信息
@@ -30,6 +34,7 @@ public class OrderController {
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     @HystrixCommand(fallbackMethod = "saveOrderFail")  //在此方法上加入熔断机制，出异常会调用saveOrderFail
     public Object save(@RequestParam("user_id")int userId, @RequestParam("product_id") int productId){
+        logger.info("order save....");
         Map<String,Object> msg = new HashMap<>();
         msg.put("code",0);
         msg.put("msg","成功");
@@ -48,6 +53,8 @@ public class OrderController {
 
     @RequestMapping(value = "/findProduct",method = RequestMethod.GET)
     public Object findProductById(@RequestParam("id") int id){
+
+        logger.info("order findProduct by id");
         return productOrderService.findProductById(id);
     }
 
